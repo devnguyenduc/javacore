@@ -1,5 +1,7 @@
 package company.stream;
 
+import jdk.internal.instrumentation.Logger;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -13,7 +15,10 @@ import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 public class Main {
-
+    private static long counter;
+    private static void wasCalled(){
+        counter++;
+    }
     public static void main(String[] args) throws IOException {
 	// write your code here
         Collection<String> collection = Arrays.asList("a", "b", "c");
@@ -74,6 +79,103 @@ public class Main {
         Iterator<String> b = a.iterator();
         while (b.hasNext()){
             System.out.println(b.next());
+        }
+
+        /*
+        *
+        * Stream Pipeline
+        *
+        * */
+
+        Stream<String> onceModifiedStream = Stream.of("abcd", "bbcd", "cbcd").skip(1);
+
+        Stream<String> twiceModifiedStream = onceModifiedStream.skip(1).map( element -> element.substring(0, 3));
+        long size = twiceModifiedStream.sorted().count();
+        System.out.println(size);
+
+        /*
+        *
+        *  Lazy Invocation
+        *
+        * */
+
+        List<String> list = Arrays.asList("abc1", "abc2", "abc3");
+        counter = 0;
+        Stream<String> stream_n = list.stream().filter( element ->{
+            wasCalled();
+            return element.contains("2");
+        });
+
+        /*
+        *
+        *   Order of Execution
+        *
+        * */
+        size = list.stream().map(element ->{
+            wasCalled();
+            return element.substring(0, 3);
+        }).count();
+
+        System.out.println(size);
+
+        /*
+        *
+        * Stream Reduction
+        *
+        * */
+
+        //  The reduce() Method
+        int reducedTwoParams = Stream.of(1, 2, 3).reduce(3 , (d, e) -> d + e , (d, e)->{
+            Logger log = null;
+            log.info("combiner was called");
+            return d + e;
+        });
+
+        System.out.println(reducedTwoParams);
+
+        // The collect() Method
+
+        List<Product> productList = Arrays.asList(new Product(23, "potatoes"),
+                new Product(14, "orange"), new Product(13, "lemon"),
+                new Product( 23, "bread"), new Product(13, "sugar")
+        );
+
+        List<String> collectorCollection = productList.stream().map(Product::getName).collect(Collectors.toList());
+
+        System.out.println(collectorCollection);
+
+        String listToString = productList.stream().map(Product::getName).collect(Collectors.joining(", ", "[","]"));
+        System.out.println(listToString);
+
+        double avaragePrice = productList.stream().collect(Collectors.averagingInt(Product::getI));
+        System.out.println(avaragePrice);
+
+        int summingPrice = productList.stream().collect(Collectors.summingInt(Product::getI));
+        System.out.println(summingPrice);
+
+        IntSummaryStatistics statistics = productList.stream().collect(Collectors.summarizingInt(Product::getI));
+        System.out.println(statistics);
+
+        Map<Integer, List<Product>> collectorMapOfLists = productList.stream().collect(Collectors.groupingBy(Product::getI));
+        Iterator iter = collectorMapOfLists.entrySet().iterator();
+        while (iter.hasNext()){
+            System.out.println(iter.next());
+        }
+
+    }
+
+    private static class Product {
+        private static int i;
+        private static String name;
+        public Product(int i, String name) {
+            this.i = i;
+            this.name = name;
+        }
+        public String getName(){
+            return name;
+        }
+        public int getI(){
+            return i;
         }
     }
 }
