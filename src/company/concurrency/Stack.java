@@ -40,24 +40,36 @@ public class Stack {
         *   When have the for loop and new Thread with new Runnable Currency
         *  tasks will run asynchronous.
         * */
-        for (int i = 0; i < 100; i++) {
-            int finalI = i;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    stack.push(finalI);
-                    System.out.println("Stack " + finalI);
-                }
-            }).start();
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true){
-                        System.err.println("Pop " + stack.pop());
-                    }
-                }
-            }).start();
-        }
 
+
+        Thread stack_ = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    stack.push("x");
+                }
+            }
+        });
+
+        Thread pop_ = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    stack.pop();
+                }
+            }
+        });
+        stack_.start();
+        pop_.start();
+        try {
+            stack_.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        try {
+            pop_.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

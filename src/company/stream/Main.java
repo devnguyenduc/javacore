@@ -125,7 +125,7 @@ public class Main {
         * */
 
         //  The reduce() Method
-        int reducedTwoParams = Stream.of(1, 2, 3).reduce(3 , (d, e) -> d + e , (d, e)->{
+        int reducedTwoParams = Stream.of(1, 2, 3).reduce(3 , (d, e) -> d - e , (d, e)->{
             Logger log = null;
             log.info("combiner was called");
             return d + e;
@@ -135,9 +135,9 @@ public class Main {
 
         // The collect() Method
 
-        List<Product> productList = Arrays.asList(new Product(23, "potatoes"),
-                new Product(14, "orange"), new Product(13, "lemon"),
-                new Product( 23, "bread"), new Product(13, "sugar")
+        List<Product> productList = Arrays.asList(new Product(23, "potatoes", 10),
+                new Product(14, "orange", 10), new Product(13, "lemon", 10),
+                new Product( 23, "bread", 10), new Product(13, "sugar", 10)
         );
 
         List<String> collectorCollection = productList.stream().map(Product::getName).collect(Collectors.toList());
@@ -162,20 +162,16 @@ public class Main {
             System.out.println(iter.next());
         }
 
+        /*
+        *
+        *   NEW FEATURE
+        *
+        * */
+        ModifyStream ne = new ModifyStream();
+        ne.readFileCSV("caigicungduoc, mac dinh la input.txt");
+        ne.ConvertCsvToObject();
+        ne.printListObject();
+        System.out.println(ne.SoleProduct("lemon", 3).toString());
     }
 
-    private static class Product {
-        private static int i;
-        private static String name;
-        public Product(int i, String name) {
-            this.i = i;
-            this.name = name;
-        }
-        public String getName(){
-            return name;
-        }
-        public int getI(){
-            return i;
-        }
-    }
 }
