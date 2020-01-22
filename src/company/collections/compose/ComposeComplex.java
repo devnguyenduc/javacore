@@ -7,6 +7,9 @@ public class ComposeComplex<T extends ComposeNumber> implements ComposeNumber<Co
     // Image
     public T im;
 
+    public ComposeComplex<ComposeInt> i;
+
+
     public  ComposeComplex(){
 
     }
@@ -23,8 +26,8 @@ public class ComposeComplex<T extends ComposeNumber> implements ComposeNumber<Co
     }
 
     public void set(T re, T im){
-        re = re;
-        im = im;
+        this.re = re;
+        this.im = im;
     }
 
     @Override
