@@ -7,7 +7,7 @@ public class ComposeComplex<T extends ComposeNumber> implements ComposeNumber<Co
     // Image
     public T im;
 
-    public ComposeComplex<ComposeInt> i;
+    public ComposeComplex<ComposeLong> i;
 
 
     public  ComposeComplex(){

@@ -1,39 +1,40 @@
 package company.collections.compose;
 
-public class ComposeInt implements ComposeNumber<Long> {
-    public long value;
+
+public class ComposeInt implements ComposeNumber<Integer> {
+    public int value;
 
     public ComposeInt(){
-        value = 0L;
+        value = 0;
     }
 
     @Override
-    public void set(Long var) {
-        value = var.longValue();
+    public void set(Integer var) {
+        value = var.intValue();
     }
 
     @Override
-    public Long get() {
+    public Integer get() {
         return value;
     }
 
-    public ComposeInt(long value) {
+    public ComposeInt(int value) {
         this.value = value;
     }
 
     @Override
-    public void plus(Long var) {
-        this.value += var.longValue();
+    public void plus(Integer var) {
+        this.value += var.intValue();
     }
 
     @Override
-    public void minus(Long var) {
-        this.value -= var.longValue();
+    public void minus(Integer var) {
+        this.value -= var.intValue();
     }
 
     @Override
-    public void multi(Long var) {
-        this.value *= var.longValue();
+    public void multi(Integer var) {
+        this.value *= var.intValue();
     }
 
     @Override
@@ -53,7 +54,8 @@ public class ComposeInt implements ComposeNumber<Long> {
     }
 
     @Override
-    public void device(Long var) {
-        this.value /= var.longValue();
+    public void device(Integer var) {
+        value /= var.intValue();
     }
+
 }
