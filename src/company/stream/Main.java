@@ -171,10 +171,12 @@ public class Main {
         ne.readFileCSV("caigicungduoc, mac dinh la input.txt");
         ne.ConvertCsvToObject();
         ne.printListObject();
-        Iterator temp = ne.FilterProduct(element -> element.getName().contains("lemon")).iterator();
+        System.out.println("/////");
+        Iterator temp = ne.FilterProduct( element -> element.amount() < 12 ).iterator();
         while (temp.hasNext()){
             System.out.println(temp.next());
         }
+        System.out.println("ádasdasd");
         System.out.println(ne.SoleProduct("lemon", 8, (e , q)-> q.minus(e)).toString());
     }
 

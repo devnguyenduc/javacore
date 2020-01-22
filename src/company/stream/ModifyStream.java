@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.BinaryOperator;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collector;
@@ -59,12 +60,12 @@ public class ModifyStream {
         return temp;
     }
 
-    public List<Product> FilterProduct(VirtualFilter <Product> virtual){
+    public List<Product> FilterProduct(Predicate <Product> virtual){
         List<Product> temp = listProduct.stream().filter(virtual).collect(Collectors.toList());
         return temp;
     }
 
-    public Product SoleProduct(String ProductName, int number, VirtualBinaryOperator<Product> BinaryExpression){
+    public Product SoleProduct(String ProductName, int number, BinaryOperator<Product> BinaryExpression){
         return this.FilterNameProduct(ProductName).stream().reduce(
           new Product(100000, ProductName, number), BinaryExpression
         );
